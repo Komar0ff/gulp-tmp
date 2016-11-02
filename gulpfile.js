@@ -11,7 +11,7 @@ var gulp = require('gulp'),
     autoprefixer = require('gulp-autoprefixer');
 
       gulp.task('connect', function() {
-          connect.server({root: 'src', livereload: true});
+          connect.server({root: '', livereload: true});
       });
 
       gulp.task('styles', function() {
