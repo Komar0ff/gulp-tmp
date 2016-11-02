@@ -1,6 +1,5 @@
 var gulp = require('gulp'),
     compass = require('gulp-compass'),
-    sync = require('browser-sync')
     concat = require('gulp-concat'),
     connect = require('gulp-connect'),
     livereload = require('gulp-livereload'),
@@ -23,9 +22,21 @@ var gulp = require('gulp'),
           return gulp.src('src/js/*.js').pipe(concat('main.js')).pipe(rename({suffix: '.min'})).pipe(uglify()).pipe(gulp.dest('build/js')).pipe(connect.reload());
       });
 
+      gulp.task('imagemin', function() {
+          gulp.src('src/img/**/*')
+          .pipe(imagemin({
+              interlaced: true,
+              progressive: true,
+              svgoPlugins: [{removeViewBox: false}],
+              use: [tinypng()]
+          }))
+          .pipe(gulp.dest('build/img'));
+  });
+
       gulp.task('watch', function() {
           gulp.watch('src/sass/*.scss', ['styles']);
           gulp.watch('src/js/*.js', ['scripts']);
+          gulp.watch('src/img/**/*, [imagemin]');
       });
 
       gulp.task('default', ['styles', 'scripts', 'watch', 'connect']);
